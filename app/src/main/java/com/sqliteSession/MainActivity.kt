@@ -41,7 +41,8 @@ class MainActivity : AppCompatActivity() {
         binding.btnSave.setOnClickListener() {
             Toast.makeText(this,"DATA SAVING",Toast.LENGTH_LONG).show()
 
-            databaseHelper.insertData("Ashok", Random.nextInt())
+            //databaseHelper.insertData("Ashok", Random.nextInt())
+            databaseHelper.insertData("Ashok", Random.nextInt(),"")
         }
         binding.btnDelete.setOnClickListener() {
             databaseHelper.delete(3)

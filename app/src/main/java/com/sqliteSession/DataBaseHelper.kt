@@ -27,7 +27,11 @@ class DataBaseHelper(context: Context) : SQLiteOpenHelper(
     }
 
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
-        TODO("Not yet implemented")
+        if(oldVersion<newVersion){
+            if (db != null) {
+                db.execSQL("ALTER TABLE ${DataBaseConstants.TABLE_NAME} ADD COLUMN ${DataBaseConstants.COLUMN_HOBBY} TEXT DEFAULT 'CODING'")
+            }
+        }
     }
 
     fun readData(): List<User> {
@@ -48,7 +52,8 @@ class DataBaseHelper(context: Context) : SQLiteOpenHelper(
                 var id = getLong(getColumnIndexOrThrow(DataBaseConstants.COLUMN_ID))
                 val name = getString(getColumnIndexOrThrow(DataBaseConstants.COLUMN_NAME))
                 val age = getInt(getColumnIndexOrThrow(DataBaseConstants.COLUMN_AGE))
-                datalist.add(User(id, name, age))
+                val hobby = getString(getColumnIndexOrThrow(DataBaseConstants.COLUMN_HOBBY))
+                datalist.add(User(id, name, age,hobby))
             }
 
         }
@@ -61,6 +66,17 @@ class DataBaseHelper(context: Context) : SQLiteOpenHelper(
         val values = ContentValues().apply {
             put(DataBaseConstants.COLUMN_NAME, name)
             put(DataBaseConstants.COLUMN_AGE, age)
+
+        }
+
+        return writableDatabase.insert(DataBaseConstants.TABLE_NAME, null, values)
+    }
+    fun insertData(name: String, age: Int,hobby: String): Long {
+
+        val values = ContentValues().apply {
+            put(DataBaseConstants.COLUMN_NAME, name)
+            put(DataBaseConstants.COLUMN_AGE, age)
+            put(DataBaseConstants.COLUMN_HOBBY, hobby)
 
         }
 
